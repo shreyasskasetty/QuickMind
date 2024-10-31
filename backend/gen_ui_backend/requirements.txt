@@ -1,0 +1,15 @@
+langgraph
+langchain_anthropic
+tavily-python
+langchain_community
+langchain_openai
+langchain_core
+langchain_ollama
+composio_langgraph
+fastapi
+langserve
+tiktoken
+langchain-text-splitters
+chromadb
+langchainhub
+PyPDF2
