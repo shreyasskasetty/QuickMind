@@ -3,7 +3,7 @@ import asyncio
 import httpx
 import json
 import time
-from streamlit.rag_utility import generate_data_store, query_rag
+from rag_utility import generate_data_store, query_rag
 import os
 from dotenv import load_dotenv
 from httpx import Timeout
