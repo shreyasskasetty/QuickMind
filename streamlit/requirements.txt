@@ -1,0 +1,10 @@
+langchain-community
+langchain
+langchain-core
+pypdf
+openai
+chromadb
+python-dotenv
+streamlit
+asyncio
+httpx
