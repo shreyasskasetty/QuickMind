@@ -4,11 +4,12 @@ python3.11 -m venv myenv
 # Activate the virtual environment
 source myenv/bin/activate
 
+echo installing composio
+pip install composio
+
 # Install dependencies using Poetry
 echo "Running poetry install"
 poetry install
-
-pip install composio
 
 # Login to your account
 echo "Login to your Composio acount"
