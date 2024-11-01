@@ -23,9 +23,11 @@ def start() -> None:
         version="1.0",
         description="API Server for QuickMind",
     )
+
     @app.get("/")
     async def redirect_root_to_docs():
         return RedirectResponse(url="/docs")
+    
     # Configure CORS
     origins = [
         "http://localhost",

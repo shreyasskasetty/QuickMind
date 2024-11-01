@@ -1,6 +1,5 @@
 
 from langchain_openai import ChatOpenAI
-from langchain_ollama import ChatOllama
 from langgraph.prebuilt import ToolNode
 from langgraph.graph import END
 from langchain import hub
@@ -23,7 +22,7 @@ def _get_model(model_name: str, bind_tools=False):
     if model_name == "openai":
         model = ChatOpenAI(temperature=0, model_name="gpt-4o")
     elif model_name == "llama":
-        model = ChatOllama(model="llama3.2", temperature=0)
+        model = ChatOpenAI(api_key="ollama", model="llama3.2", base_url="http://localhost:11434/v1")
     else:
         raise ValueError(f"Unsupported model type: {model_name}")
     
@@ -44,24 +43,21 @@ def _setup_meeting_scheduler(config):
     prompt = hub.pull("quick-mind/scheduler")
     model_name = config.get('configurable', {}).get("model_name", "openai")
     llm = _get_model(model_name, bind_tools=True)
-    llm_with_tools = llm.bind_tools(tools)
-    return prompt | llm_with_tools
+    return prompt | llm
 
 
 def _setup_email_sender(config):
     prompt = hub.pull("quick-mind/email")
     model_name = config.get('configurable', {}).get("model_name", "openai")
     llm = _get_model(model_name, bind_tools=True)
-    llm_with_tools = llm.bind_tools(tools)
-    return prompt | llm_with_tools
+    return prompt | llm
 
 
 def _setup_search_agent(config):
     prompt = hub.pull("quick-mind/search")
     model_name = config.get('configurable', {}).get("model_name", "openai")
     llm = _get_model(model_name, bind_tools=True)
-    llm_with_tools = llm.bind_tools(tools)
-    return prompt | llm_with_tools
+    return prompt | llm
 
 
 ## Define Node Functions
@@ -69,6 +65,7 @@ def search_agent(state, config):
     messages = state["messages"]
     model = _setup_search_agent(config)
     response = model.invoke({"question": messages[-1].content, "chat_history": messages[:-1], "DATE_TIME":DATE_TIME, "TIMEZONE":TIMEZONE})
+    print(response)
     # We return a list, because this will get added to the existing list
     return {"messages": [response], "sender": "search_agent"}
 

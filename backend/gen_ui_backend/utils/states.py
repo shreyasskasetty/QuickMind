@@ -19,7 +19,6 @@ class SuperGraphState(TypedDict, total=False):
     messages: Annotated[Sequence[BaseMessage], add_messages]
     sender: Optional[str]
     intent: Optional[Intent]
-    documents: Optional[List[str]]
 
 class RagGraphState(TypedDict):
     rag_result: str
