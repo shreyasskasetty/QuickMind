@@ -58,29 +58,33 @@ To set up the QuickMind application, follow these steps:
      - install composio to connect to google calendar and gmail
      - install libraries using poetry
      - Add google calendar and gmail tool (This asks for google auth)
-   - ## Important
+   - ## Environment Setup
+   - copy the .env.example to .env and assign all the api keys
+     ```
+     cp .env.example > .env
+     ```
    - Make sure you go to Tavily and get an API key and export it in the terminal before running the backend. 
-   - Use the following command to export Tavily api key(This is the only exception since it is not loaded with normal .env file)
-   ```
-    export TAVILY_API_KEY=your-api-key
-   ```
-   - Also make sure to look at other api keys needed for the backend to run, which can be found in env.example
-    ```
-      # ------------------LangSmith tracing------------------
-      LANGCHAIN_API_KEY=
-      LANGCHAIN_CALLBACKS_BACKGROUND=true
-      LANGCHAIN_TRACING_V2=false
-      LANGCHAIN_ENDPOINT="https://api.smith.langchain.com"
-      LANGCHAIN_PROJECT="your-project-name"
-      # -------------------Tools & Model API KEYS----------------------------------
-      OPENAI_API_KEY=your-openai-api-key
-      TAVILY_API_KEY=your-tavily-api-key
-      COMPOSIO_API_KEY=your-composio-key
-    ```
-    - visit: https://app.composio.dev/ and login to get your api key
-    - visit: https://tavily.com/ and login to get your api key
-    - visit: https://platform.openai.com/ and login to get your openai api key
-    - visit: https://smith.langchain.com/ and login to get your lanchain api key. (visit settings to find the api key generator)
+   - Use the following command to export Tavily API key(This is the only exception since it is not loaded with normal .env file)
+      ```
+       export TAVILY_API_KEY=your-api-key
+      ```
+   - Also make sure to look at other API keys needed for the backend to run, which can be found in env.example
+      ```
+        # ------------------LangSmith tracing------------------
+        LANGCHAIN_API_KEY=
+        LANGCHAIN_CALLBACKS_BACKGROUND=true
+        LANGCHAIN_TRACING_V2=false
+        LANGCHAIN_ENDPOINT="https://api.smith.langchain.com"
+        LANGCHAIN_PROJECT="your-project-name"
+        # -------------------Tools & Model API KEYS----------------------------------
+        OPENAI_API_KEY=your-openai-api-key
+        TAVILY_API_KEY=your-tavily-api-key
+        COMPOSIO_API_KEY=your-composio-key
+      ```
+    - visit: https://app.composio.dev/ and login to get your API key
+    - visit: https://tavily.com/ and login to get your API key
+    - visit: https://platform.openai.com/ and login to get your openai API key
+    - visit: https://smith.langchain.com/ and login to get your lanchain API key. (visit settings to find the api key generator)
 
 3. Set up the frontend:
    - Navigate to the `streamlit` directory and install dependencies:
@@ -88,7 +92,14 @@ To set up the QuickMind application, follow these steps:
      cd streamlit
      pip install -r requirements.txt
      ```
-
+  - ## Environment Setup
+       ```
+        cp .env.example > .env
+       ```
+       - Assign the open ai api key in the .env file as shown below
+       ```
+        OPENAI_API_KEY=Your-OpenAI-API-Key
+       ```
 4. Run the backend server:
    ```bash
    cd backend
