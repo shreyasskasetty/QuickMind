@@ -51,7 +51,7 @@ To set up the QuickMind application, follow these steps:
    - Navigate to the `backend` directory. Run the setup script to configure the environment and connect to Google Calendar and Gmail. 
      ```bash
         cd backend
-        bash setup.sh
+        sh setup.sh
      ```
    - setup.sh does the following
      - create a virtual python environment (Note: use python3.11 or above since all the libraries downloaded are using this version)
