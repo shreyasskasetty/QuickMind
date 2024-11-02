@@ -7,7 +7,7 @@ source myenv/bin/activate
 
 echo installing composio
 pip install composio_core
-
+pip install poetry
 # Install dependencies using Poetry
 echo "Running poetry install"
 poetry install

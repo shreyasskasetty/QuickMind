@@ -51,7 +51,7 @@ To set up the QuickMind application, follow these steps:
    - Navigate to the `backend` directory. Run the setup script to configure the environment and connect to Google Calendar and Gmail. 
      ```bash
         cd backend
-        sh setup.sh
+        source setup.sh
      ```
    - setup.sh does the following
      - create a virtual python environment (Note: use python3.11 or above since all the libraries downloaded are using this version)
@@ -63,26 +63,30 @@ To set up the QuickMind application, follow these steps:
      ```
      cp .env.example > .env
      ```
-   - Make sure you go to Tavily and get an API key and export it in the terminal before running the backend. 
-   - Use the following command to export Tavily API key(This is the only exception since it is not loaded with normal .env file)
+   - Make sure you export the Google API Key and CSE ID in the terminal before running the backend. 
+   - Use the following command to export Google Search API key(This is the only exception since it is not loaded with normal .env file using dotenvs. Other api keys will be loaded.)
       ```
-       export TAVILY_API_KEY=your-api-key
+       GOOGLE_CSE_ID=your-custom-search-engine-id
+       GOOGLE_API_KEY=your-composio-key
       ```
+   - To get the above API key and Custom Search Engine ID visit https://console.cloud.google.com/apis/ and https://programmablesearchengine.google.com/controlpanel/all respectively
    - Also make sure to look at other API keys needed for the backend to run, which can be found in env.example
       ```
         # ------------------LangSmith tracing------------------
-        LANGCHAIN_API_KEY=
+        LANGCHAIN_API_KEY=your-langchain-api-key
         LANGCHAIN_CALLBACKS_BACKGROUND=true
         LANGCHAIN_TRACING_V2=false
         LANGCHAIN_ENDPOINT="https://api.smith.langchain.com"
         LANGCHAIN_PROJECT="your-project-name"
         # -------------------Tools & Model API KEYS----------------------------------
         OPENAI_API_KEY=your-openai-api-key
-        TAVILY_API_KEY=your-tavily-api-key
+        GOOGLE_CSE_ID=your-custom-search-engine-id
+        GOOGLE_API_KEY=your-google-search-api-key
         COMPOSIO_API_KEY=your-composio-key
       ```
     - visit: https://app.composio.dev/ and login to get your API key
-    - visit: https://tavily.com/ and login to get your API key
+    - visit: https://console.cloud.google.com/apis/dashboard and login to get your API key for google search
+    - visit: https://programmablesearchengine.google.com/controlpanel/all to get your CSE ID
     - visit: https://platform.openai.com/ and login to get your openai API key
     - visit: https://smith.langchain.com/ and login to get your lanchain API key. (visit settings to find the api key generator)
 
