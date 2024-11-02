@@ -121,6 +121,16 @@ To set up the QuickMind application, follow these steps:
 - **Interacting with the Assistant**: Type your questions or commands in the chat input area and receive responses based on the context and uploaded documents.
 - **Model Selection**: Choose between different AI models (e.g., OpenAI, Llama) to customize the assistant's behavior.
 
+
+## Errors and Debugging
+If you come accross this error while downloading packages for streamlit app the solution is given below
+```
+TypeError: Descriptors cannot be created directly. If this call came from a _pb2.py file, your generated code is out of date and must be regenerated with protoc >= 3.19.0. If you cannot immediately regenerate your protos, some other possible workarounds are: 1. Downgrade the protobuf package to 3.20.x or lower. 2. Set PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python (but this will use pure-Python parsing and will be much slower). More information: https://developers.google.com/protocol-buffers/docs/news/2022-05-06#python-updates
+```
+Solution:
+```
+export PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
+```
 ## License
 This project is licensed under the MIT License. See the LICENSE file for more details.
 
