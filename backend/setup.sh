@@ -1,11 +1,12 @@
 # Create Python virtual environment with version 3.11.7
 echo "Creating Python virtual environment with version 3.11.7"
-python3.11 -m venv myenv
+python3 -m venv myenv
+
 # Activate the virtual environment
 source myenv/bin/activate
 
 echo installing composio
-pip install composio
+pip install composio_core
 
 # Install dependencies using Poetry
 echo "Running poetry install"
