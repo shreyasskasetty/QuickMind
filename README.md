@@ -64,7 +64,7 @@ To set up the QuickMind application, follow these steps:
      cp .env.example > .env
      ```
    - Make sure you export the Google API Key and CSE ID in the terminal before running the backend. 
-   - Use the following command to export Google Search API key(This is the only exception since it is not loaded with normal .env file using dotenvs. Other api keys will be loaded.)
+   - Use the following command to export Google Search API key(This is the only exception since it is not loaded with normal .env file using dotenvs. If other api keys are not load please use the export command to set all api keys present in .env file)
       ```
        GOOGLE_CSE_ID=your-custom-search-engine-id
        GOOGLE_API_KEY=your-composio-key
