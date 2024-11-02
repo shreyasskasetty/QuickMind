@@ -10,11 +10,20 @@ from gen_ui_backend.utils.tools import tools
 from gen_ui_backend.utils.states import SuperGraphState
 from datetime import datetime
 from typing import Optional, Any, Literal
+import json
 import os
 DATE_TIME: str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 TIMEZONE: Optional[Any] = datetime.now().astimezone().tzinfo
 
 DATE_TIME = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+def load_contacts():
+    with open('gen_ui_backend/contact_database/contacts.json', 'r') as file:
+        data = json.load(file)
+    contacts = "\n".join(list(map(lambda x: f"{x[0]} - {x[1]}", data["contacts"].items())))
+    return contacts
+
+contacts = load_contacts()
 
 ## Utility helper functions
 @lru_cache(maxsize=4)
@@ -75,7 +84,8 @@ def send_email_agent(state: SuperGraphState, config):
     question = messages[-1].content
     chat_history = messages[:-1]
     email_sender = _setup_email_sender(config)
-    response = email_sender.invoke({"chat_history": chat_history, "question": question})
+    
+    response = email_sender.invoke({"chat_history": chat_history, "question": question, "contacts": contacts})
     return {"messages": [response], "sender": "email_sender_agent"}
 
 
@@ -94,7 +104,7 @@ def schedule_meeting_agent(state: SuperGraphState, config):
     question = messages[-1].content
     chat_history = messages[:-1]
     meeting_scheduler = _setup_meeting_scheduler(config)
-    response = meeting_scheduler.invoke({"chat_history": chat_history, "question": question, "DATE_TIME":DATE_TIME, "TIMEZONE":TIMEZONE})
+    response = meeting_scheduler.invoke({"chat_history": chat_history, "question": question, "DATE_TIME":DATE_TIME, "TIMEZONE":TIMEZONE, "contacts": contacts})
     return {"messages": [response], "sender": "meeting_scheduler_agent"} 
  
 
@@ -135,8 +145,6 @@ def route_to_agent(state: SuperGraphState, config):
         return "llm_agent"
     # elif intent == "document_query":
     #     return "document_query_agent"
-
-
 
 
 # Define the function that determines whether to continue or not

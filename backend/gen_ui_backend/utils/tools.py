@@ -1,8 +1,9 @@
-from langchain_community.tools.tavily_search import TavilySearchResults
 from composio_langgraph import Action, ComposioToolSet
 from langchain_community.vectorstores import Chroma
 from langchain_openai import OpenAIEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_google_community import GoogleSearchAPIWrapper
+from langchain_core.tools import Tool
 
 import os
 
@@ -15,9 +16,17 @@ schedule_tools = composio_toolset.get_tools(
         Action.GOOGLECALENDAR_DELETE_EVENT,
     ]
 )
+
+search = GoogleSearchAPIWrapper()
+google_search_tool = Tool(
+    name="google_search",
+    description="Search Google for recent results.",
+    func=search.run,
+)
+
 email_tools = composio_toolset.get_tools(actions=[Action.GMAIL_CREATE_EMAIL_DRAFT, Action.GMAIL_SEND_EMAIL])
 
-tools = [TavilySearchResults(max_results=2), *schedule_tools, *email_tools]
+tools = [google_search_tool, *schedule_tools, *email_tools]
 
 def create_retriever_tool(docs):
     doc_list = [doc["content"] for  doc in docs]

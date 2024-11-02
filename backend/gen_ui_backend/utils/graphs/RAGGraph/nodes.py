@@ -9,7 +9,6 @@ from langchain_core.prompts import PromptTemplate
 from langchain_core.pydantic_v1 import BaseModel, Field
 from langchain_openai import ChatOpenAI
 from PyPDF2 import PdfReader
-from langgraph.prebuilt import tools_condition
 
 class AgentState(TypedDict):
     # The add_messages function defines how an update should be processed
