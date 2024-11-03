@@ -35,6 +35,7 @@ The backend is built using FastAPI, providing a robust API for handling requests
 - **Chat Processing**: The backend processes chat messages, invoking the appropriate models and tools based on user intents.
 - **Integration with Langchain**: The backend utilizes Langchain for document loading, text splitting, and embedding, enabling efficient retrieval of information from uploaded documents.
 
+**Note**: For the local model to work, ensure that Ollama is running in the background with the Llama 3.2 model pulled.
 ### API Endpoints
 The following API endpoint is used in the application:
 
@@ -118,6 +119,8 @@ To set up the QuickMind application, follow these steps:
        ```
         OPENAI_API_KEY=Your-OpenAI-API-Key
        ```
+
+
 4. Run the backend server:
    ```bash
    cd backend
