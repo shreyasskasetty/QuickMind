@@ -5,18 +5,11 @@ QuickMind is an AI-powered personal assistant designed to facilitate various tas
 
 ## Snapshots
 Here are some snapshots of the QuickMind application:
-
-<video width="640" height="480" controls>
-  <source src="videos/send-email.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+[![Watch the video](https://img.youtube.com/vi/pJIweJ_txu4/0.jpg)](https://www.youtube.com/watch?v=pJIweJ_txu4)
 
 *Click to watch the video of the email sending feature*
 
-<video width="640" height="480" controls>
-  <source src="videos/document-query.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+[![Watch the video](https://img.youtube.com/vi/Kf9k9Xnn4jw/0.jpg)](https://youtu.be/Kf9k9Xnn4jw)
 
 *Snapshot of the document query feature*
 
