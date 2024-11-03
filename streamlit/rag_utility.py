@@ -36,7 +36,7 @@ def split_text(documents: list[Document]):
   """
   # Initialize text splitter with specified parameters
   text_splitter = RecursiveCharacterTextSplitter(
-    chunk_size=300, # Size of each chunk in characters
+    chunk_size=500, # Size of each chunk in characters
     chunk_overlap=100, # Overlap between consecutive chunks
     length_function=len, # Function to compute the length of the text
     add_start_index=True, # Flag to add start index to each chunk
@@ -89,7 +89,7 @@ def generate_data_store():
   save_to_chroma(chunks) # Save the processed data to a data store
 
 
-query_text = "Summarize my recommendation letter. Highlight the projects he mentioned"
+
 PROMPT_TEMPLATE = """
 Answer the question based only on the following context:
 {context}
@@ -106,7 +106,7 @@ def query_rag(query_text):
     - formatted_response (str): Formatted response including the generated text and sources.
     - response_text (str): The generated response text.
   """
-  # YOU MUST - Use same embedding function as before
+
   embedding_function = OpenAIEmbeddings()
 
   # Prepare the database
@@ -122,7 +122,6 @@ def query_rag(query_text):
   # Combine context from matching documents
   context_text = "\n\n - -\n\n".join([doc.page_content for doc, _score in results])
  
-  # Create prompt template using context and query text
   prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
   prompt = prompt_template.format(context=context_text, question=query_text)
   
@@ -139,5 +138,5 @@ def query_rag(query_text):
   sources = [doc.metadata.get("source", None) for doc, _score in results]
  
   # Format and return response including generated text and sources
-  formatted_response = f"Response: {response_text}\nSources: {sources}"
+  formatted_response = {"response":response_text, "sources": sources}
   return formatted_response, response_text

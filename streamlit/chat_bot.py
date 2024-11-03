@@ -7,6 +7,7 @@ from rag_utility import generate_data_store, query_rag
 import os
 from dotenv import load_dotenv
 from httpx import Timeout
+import traceback
 
 load_dotenv()
 
@@ -86,12 +87,14 @@ async def chat_with_bot(user_input):
             },
             "config": {
                 "configurable": {
-                "model_name": st.session_state.model_type
+                "model_name":"openai"
                 }
             },
             "kwargs": {}
     }
-    print(input_json)
+
+    if st.session_state.model_type == "llama":
+        time.sleep(10)
     timeout = Timeout(10.0, read=300.0)
     async with httpx.AsyncClient(timeout=timeout) as client:
         try:
@@ -193,17 +196,16 @@ async def chat_with_bot(user_input):
                                         if msg.get("type") == "tool":
                                             tool_name = msg.get("name", "unknown")
                                             tool_content = msg.get("content", "")
-                                            
                                             if "email" in tool_name.lower():
                                                 try:
                                                     response_data = json.loads(tool_content)
-                                                    print(response_data)
-                                                    if "draft" in tool_name.lower():
+                                                    if "draft" in tool_name.lower() and response_data.get("successful"):
                                                         with st.expander("📧 Email Draft Created", expanded=True):
                                                             message = "Email draft created successfully!"
                                                             st.success(message)
                                                             st.session_state.messages.append({"role": "assistant", "content": message, "type": "expander-success", "title": "📧 Email Draft Created"})        
                                                     elif "send" in tool_name.lower():
+                                                        response_data = json.loads(tool_content)
                                                         if response_data.get("successfull"):
                                                             with st.expander("📧 Email Tool Result", expanded=True):
                                                                 message = "Email sent successfully!"
@@ -214,8 +216,9 @@ async def chat_with_bot(user_input):
                                                                 message ="Failed to send email."
                                                                 st.error(message)
                                                                 st.session_state.messages.append({"role": "assistant", "content": message, "type": "expander-error", "title": "📧 Email Tool Result"})        
-                                                                
-                                                except:
+               
+                                                except Exception as e:
+                                                    print(e)
                                                     with st.expander("📧 Email Tool Result", expanded=True):
                                                         st.markdown(tool_content)
                                             elif "schedule" in tool_name.lower():
@@ -224,7 +227,6 @@ async def chat_with_bot(user_input):
                                                     response_data = json.loads(tool_content)
                                                     if response_data.get("successfull") and response_data.get("data", {}).get("response_data"):
                                                         event = response_data["data"]["response_data"]
-                                                        
                                                         # Format the datetime strings
                                                         start_time = event["start"]["dateTime"]
                                                         end_time = event["end"]["dateTime"]
@@ -233,7 +235,7 @@ async def chat_with_bot(user_input):
                                                         attendees = ", ".join([att["email"] for att in event.get("attendees", [])])
                                                         
                                                         with st.expander("📅 Meeting Scheduled!", expanded=True):
-                                                            st.markdown(f"""
+                                                            message = f"""
                                                                     ✅ **Meeting Successfully Scheduled**
                                                                     
                                                                     **Title:** {event.get('summary')}
@@ -242,23 +244,33 @@ async def chat_with_bot(user_input):
                                                                     **Organizer:** {event.get('organizer', {}).get('email')}
                                                                     
                                                                     [View in Calendar]({event.get('htmlLink')})
-                                                                    """)
+                                                                    """
+                                                            st.markdown(message)
+                                                            st.session_state['messages'].append({"role": "assistant", "content": message.strip(), "type": "expander", "title": "📅 Success"})
                                                     else:
-                                                        with st.expander("📅 Scheduler Result", expanded=True):
-                                                            st.error("Failed to schedule the meeting. Please try again.")
+                                                        with st.expander("📅 Error", expanded=True):
+                                                            message = "Failed to schedule the meeting. Please try again."
+                                                            st.error(message)
+                                                        st.session_state['messages'].append({"role": "assistant", "content": message.strip(), "type": "expander-error", "title": "📅 Error"})
                                                 except json.JSONDecodeError:
-                                                    with st.expander("📅 Scheduler Result", expanded=True):
-                                                        st.markdown(tool_content)
+                                                    with st.expander("📅 Error", expanded=True):
+                                                        message = "Failed to process scheduler response."
+                                                        st.error(message)
+                                                    st.session_state['messages'].append({"role": "assistant", "content": message.strip(), "type": "expander-error", "title": "📅 Error"})
                                             elif "search" in tool_name.lower():
                                                 try:
-                                                    results = json.loads(tool_content)
-                                                    formatted_results = "\n".join([f"- {r.get('content', '')}" 
-                                                                              for r in results])
+                                                    # results = json.loads(tool_content)
                                                     with st.expander("🔍 Search Results", expanded=True):
-                                                        st.markdown(formatted_results)
-                                                except:
+                                                        st.markdown(
+                                                            f'<div style="max-height: 300px; overflow-y: auto;">{tool_content}</div>',
+                                                            unsafe_allow_html=True
+                                                        )
+                                                    st.session_state['messages'].append({"role": "assistant", "content": tool_content.strip(), "type": "expander", "title": "🔍 Search Results"})
+                                                except Exception as e:
                                                     with st.expander("🔍 Search Results", expanded=True):
-                                                        st.markdown(tool_content)
+                                                        message = "failed to process search results"
+                                                        st.error(message)
+                                                        st.session_state['messages'].append({"role": "assistant", "content": message.strip(), "type": "expander-error", "title": "🔍 Search Results"})
                                 else:
                                     # Handle regular content (LLM response)
                                     output_content = find_key(chunk_json, "content")
@@ -269,7 +281,7 @@ async def chat_with_bot(user_input):
                                         else:
                                             with st.expander("🤖 Intermediate Response", expanded=True):
                                                 st.markdown(full_response)
-
+                                                st.session_state['messages'].append({"role": "assistant", "content": full_response.strip(), "type": "chat", "title": "🔍 Search Results"})
                         # Final message display (always in message_placeholder)
                         full_response = full_response.replace("FINAL ANSWER", "")
                         message_placeholder.markdown(full_response.strip())
@@ -282,6 +294,7 @@ async def chat_with_bot(user_input):
             st.error("ReadTimeout: The request took too long to process.")
         except Exception as e:
             st.error(f"An error occurred: {str(e)}")
+            traceback.print_exc()
 
 # Add custom CSS at the top of the file
 st.markdown("""
@@ -366,7 +379,7 @@ with st.sidebar:
         format_func=lambda x: "🦙 Local Llama" if x == "llama" else "☁️ OpenAI"
     )
     st.markdown("---")
-    st.markdown("*Made with ❤️ by Team SNOOZE")
+    st.markdown("*Made with ❤️ by Shreyas")
 
     # Add PDF mode toggle here
     st.markdown("### 🔍 Query Mode")
@@ -397,16 +410,26 @@ st.markdown("#### Start chatting below 💭")
 
 for message in st.session_state["messages"]:
     with st.chat_message(message["role"]):
+        content = message['content']  # Simplified content assignment
         if "expander" in message["type"]:
             with st.expander(message["title"], expanded=True):
+                # Add a scroll box for the expander content
+
                 if "success" in message["type"]:
-                    st.success(message["content"])
+                    st.success(content)
                 elif "error" in message["type"]:
-                    st.error(message["content"])
+                    st.error(content)
                 else:
-                    st.markdown(message["content"])
+                    st.markdown(
+                    f"""
+                    <div style="max-height: 300px; overflow-y: auto;">
+                        {content}
+                    </div>
+                    """, 
+                    unsafe_allow_html=True
+                    )
         else:
-            st.write(message["content"])
+            st.write(content)
 
 if prompt := st.chat_input("You:"):
     # Add PDF context to the message if PDF mode is enabled
@@ -417,8 +440,8 @@ if prompt := st.chat_input("You:"):
         # prompt = f"Using the context from the upload PDF documents, please answer: {prompt}"
         formatted_response, response_text  = query_rag(prompt)
         with st.chat_message("assistant"):
-            st.markdown(formatted_response)
-        st.session_state['messages'].append({"role": "assistant", "content": formatted_response, "type": "chat"})
+            st.markdown(formatted_response["response"])
+        st.session_state['messages'].append({"role": "assistant", "content": formatted_response["response"], "type": "chat"})
     elif st.session_state.pdf_mode and not st.session_state.pdf_docs:
         st.error("Please upload documents first to use document query mode!")
         st.stop()
