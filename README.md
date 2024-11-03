@@ -78,14 +78,12 @@ To set up the QuickMind application, follow these steps:
      ```
      cp .env.example > .env
      ```
-   - Make sure you export the Google API Key and CSE ID in the terminal before running the backend. 
-   - Use the following command to export Google Search API key(This is the only exception since it is not loaded with normal .env file using dotenvs. If other api keys are not load please use the export command to set all api keys present in .env file)
-      ```
-       GOOGLE_CSE_ID=your-custom-search-engine-id
-       GOOGLE_API_KEY=your-composio-key
-      ```
-   - To get the above API key and Custom Search Engine ID visit https://console.cloud.google.com/apis/ and https://programmablesearchengine.google.com/controlpanel/all respectively
-   - Also make sure to look at other API keys needed for the backend to run, which can be found in env.example
+     This will copy all the environment variables to .env from which the API keys will be exported by the backend server
+   - Make sure you run the following to load the env file by poetry
+     ```
+     poetry self add poetry-dotenv-plugin
+     ```
+   - Set all the below environment variables given below for the backend to work
       ```
         # ------------------LangSmith tracing------------------
         LANGCHAIN_API_KEY=your-langchain-api-key
@@ -99,6 +97,7 @@ To set up the QuickMind application, follow these steps:
         GOOGLE_API_KEY=your-google-search-api-key
         COMPOSIO_API_KEY=your-composio-key
       ```
+    To generate API Keys:
     - visit: https://app.composio.dev/ and login to get your API key
     - visit: https://console.cloud.google.com/apis/dashboard and login to get your API key for google search
     - visit: https://programmablesearchengine.google.com/controlpanel/all to get your CSE ID
