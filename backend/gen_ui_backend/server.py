@@ -10,7 +10,7 @@ from gen_ui_backend.agent import create_graph
 from gen_ui_backend.types import ChatInputType
 
 # Load environment variables from .env file
-load_dotenv()
+load_dotenv(os.path.join(os.path.dirname(__file__), '..', '.env'))
 
 UPLOAD_DIRECTORY = "uploaded_pdfs"
 
