@@ -3,6 +3,15 @@
 ## Overview
 QuickMind is an AI-powered personal assistant designed to facilitate various tasks such as document querying, scheduling meetings, and sending emails. It leverages advanced language models and a retrieval-augmented generation (RAG) approach to provide intelligent responses based on user input and uploaded documents.
 
+## Snapshots
+Here are some snapshots of the QuickMind application:
+
+[![Snapshot 1](videos/thumbnail.png)](videos/send-email.mov)
+*Click to watch the video of the email sending feature*
+
+[![Snapshot 2](videos/dq-thumbnail.png)](videos/document-query.mov)
+*Snapshot of the document query feature*
+
 ## Features
 - **Chat Interface**: Users can interact with the AI assistant through a user-friendly chat interface.
 - **Document Uploading**: Users can upload multiple PDF documents for the assistant to query and extract information from.
@@ -25,10 +34,15 @@ The backend is built using FastAPI, providing a robust API for handling requests
 - **Chat Processing**: The backend processes chat messages, invoking the appropriate models and tools based on user intents.
 - **Integration with Langchain**: The backend utilizes Langchain for document loading, text splitting, and embedding, enabling efficient retrieval of information from uploaded documents.
 
-## API Endpoints
+### API Endpoints
 The following API endpoint is used in the application:
 
 - **`/chat/stream`**: This endpoint handles chat interactions between the user and the assistant.
+
+### Langgraph Work Flow
+![Snapshot 3](backend/graph.jpeg) \
+*Graph Workflow*
+
 
 ## Tech Stack
 The QuickMind application utilizes the following libraries and technologies:
