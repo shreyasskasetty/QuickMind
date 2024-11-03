@@ -87,14 +87,12 @@ async def chat_with_bot(user_input):
             },
             "config": {
                 "configurable": {
-                "model_name":"openai"
+                "model_name":st.session_state.model_type,
                 }
             },
             "kwargs": {}
     }
 
-    if st.session_state.model_type == "llama":
-        time.sleep(10)
     timeout = Timeout(10.0, read=300.0)
     async with httpx.AsyncClient(timeout=timeout) as client:
         try:
