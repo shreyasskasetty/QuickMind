@@ -4,7 +4,7 @@
 QuickMind is an AI-powered personal assistant designed to facilitate various tasks such as document querying, scheduling meetings, and sending emails. It leverages advanced language models and a retrieval-augmented generation (RAG) approach to provide intelligent responses based on user input and uploaded documents.
 
 ## Snapshots
-Here are some snapshots of the QuickMind application:
+Here are some demo videos of the QuickMind application:
 [![Watch the video](https://img.youtube.com/vi/pJIweJ_txu4/0.jpg)](https://www.youtube.com/watch?v=pJIweJ_txu4)
 
 *Click to watch the video of the email sending feature*
