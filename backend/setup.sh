@@ -12,6 +12,8 @@ pip install poetry
 echo "Running poetry install"
 poetry install
 
+poetry self add poetry-dotenv-plugin
+
 # Login to your account
 echo "Login to your Composio acount"
 composio login
