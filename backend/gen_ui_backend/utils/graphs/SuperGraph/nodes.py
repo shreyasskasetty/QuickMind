@@ -73,8 +73,7 @@ def _setup_search_agent(config):
 def search_agent(state, config):
     messages = state["messages"]
     model = _setup_search_agent(config)
-    response = model.invoke({"question": messages[-1].content, "chat_history": messages[:-1], "DATE_TIME":DATE_TIME, "TIMEZONE":TIMEZONE})
-    print(response)
+    response = model.invoke({"message": messages[-1].content, "chat_history": messages[:-1], "DATE_TIME":DATE_TIME, "TIMEZONE":TIMEZONE})
     # We return a list, because this will get added to the existing list
     return {"messages": [response], "sender": "search_agent"}
 
@@ -114,7 +113,7 @@ def detect_intent(state: SuperGraphState, config):
     chat_history = messages[:-1]
     intent_detection = _setup_intent_detection(config)
     response = intent_detection.invoke({"chat_history": chat_history, "question": question})
-    print(f"Intent detection response: {response['intent']}")
+    # print(f"Intent detection response: {response['intent']}")
     return {"intent": response['intent']}
 
 
@@ -151,9 +150,11 @@ def route_to_agent(state: SuperGraphState, config):
 def continue_search(state: SuperGraphState):
     messages = state["messages"]
     last_message = messages[-1]
+    # print("tool_call:",last_message.tool_calls)
+    # print("content:", last_message.content)
     # If there are no tool calls, then we finish
     if not last_message.tool_calls:
-        return "end"
+        return "__FINISH__"
     # Otherwise if there is, we continue
     else:
         return "continue"

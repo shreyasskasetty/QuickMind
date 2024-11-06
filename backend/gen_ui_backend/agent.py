@@ -81,7 +81,7 @@ def create_graph() -> CompiledGraph:
             # If `tools`, then we call the tool node.
             "continue": "tool_node",
             # Otherwise we finish.
-            "end": END,
+            "__FINISH__": END,
         },
     )
 
